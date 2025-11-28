@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <h1>Hello, I'm Mansii.</h1>
+        <p>A writer, thinker, and developer exploring the intersection of philosophy, culture, and technology.</p>
+        <a href="{% url 'about' %}" class="btn">More About Me</a>
+    </div>
+</section>
+
+<section class="recent-posts container">
+    <h2>Recent Writings</h2>
+    <div class="grid">
+        {% for post in recent_posts %}
+        <article class="post-card">
+            <div class="post-meta">
+                {{ post.created_at|date:"F j, Y" }}
+                {% if post.category %} | {{ post.category.name }}{% endif %}
+            </div>
+            <h3 class="post-title"><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
+            <p class="post-excerpt">{{ post.content|striptags|truncatewords:20 }}</p>
+            <a href="{{ post.get_absolute_url }}" class="btn">Read More</a>
+        </article>
+        {% empty %}
+        <p>No posts yet.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

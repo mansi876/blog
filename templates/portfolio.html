@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Portfolio - My Portfolio{% endblock %}
+
+{% block content %}
+<section class="container" style="padding: 4rem 0;">
+    <h1>Selected Projects</h1>
+    <div class="grid">
+        {% for project in projects %}
+        <div class="post-card">
+            {% if project.image %}
+            <img src="{{ project.image.url }}" alt="{{ project.title }}"
+                style="width: 100%; height: 200px; object-fit: cover; margin-bottom: 1rem;">
+            {% endif %}
+            <h3 class="post-title">{{ project.title }}</h3>
+            <p class="post-excerpt">{{ project.description }}</p>
+            {% if project.link %}
+            <a href="{{ project.link }}" target="_blank" class="btn">View Project</a>
+            {% endif %}
+        </div>
+        {% empty %}
+        <p>No projects to display yet.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

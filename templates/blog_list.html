@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Blog - My Portfolio{% endblock %}
+
+{% block content %}
+<section class="container" style="padding: 4rem 0;">
+    <h1>Writings</h1>
+    <div class="grid">
+        {% for post in posts %}
+        <article class="post-card">
+            {% if post.featured_image %}
+            <img src="{{ post.featured_image.url }}" alt="{{ post.title }}"
+                style="width: 100%; height: 200px; object-fit: cover; margin-bottom: 1rem;">
+            {% endif %}
+            <div class="post-meta">
+                {{ post.created_at|date:"F j, Y" }}
+                {% if post.category %} | {{ post.category.name }}{% endif %}
+            </div>
+            <h3 class="post-title"><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
+            <p class="post-excerpt">{{ post.content|striptags|truncatewords:20 }}</p>
+            <a href="{{ post.get_absolute_url }}" class="btn">Read More</a>
+        </article>
+        {% empty %}
+        <p>No posts published yet.</p>
+        {% endfor %}
+    </div>
+
+    {% if is_paginated %}
+    <div class="pagination" style="text-align: center; margin-top: 2rem;">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+            <a href="?page=1" class="btn">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="btn">previous</a>
+            {% endif %}
+
+            <span class="current" style="margin: 0 1rem; font-family: var(--font-serif);">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="btn">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="btn">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}
